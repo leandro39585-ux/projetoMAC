@@ -1,0 +1,20 @@
+NOTCHBOX DESKTOP (macOS e Windows)
+
+Requisitos: Node.js 20 LTS (nodejs.org). No MacBook Air 2016 com Monterey 12.7.6 use o Node 20, nao o 22.
+
+1) Abrir o terminal nesta pasta e correr:
+     npm install
+     npm start
+   A barra aparece colada ao topo do ecra, por cima das outras janelas.
+   Atalho global: Ctrl/Cmd + Alt + Espaco. Icone na barra de menus/bandeja: sair e "Iniciar com o sistema".
+
+2) Criar o instalador:
+     npm run dist
+   Resultado na pasta "dist": .dmg (corre isto no Mac) ou .exe (corre isto no Windows).
+   Nao ha assinatura: no Mac, clique direito > Abrir da primeira vez; no Windows, "Mais informacoes > Executar mesmo assim".
+
+3) IA: edite config.json e ponha o URL do seu site na Vercel:  { "url": "https://o-teu-projeto.vercel.app" }
+   Assim a barra usa o /api/chat com a sua chave. Sem URL, a barra abre mas a IA fica indisponivel.
+
+Limites: a escuta por voz do navegador (Web Speech) NAO funciona dentro do Electron; use o texto.
+Volume, brilho, Wi-Fi, Bluetooth e musica do sistema ainda nao estao ligados.
