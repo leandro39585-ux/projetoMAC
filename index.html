@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NOTCHBOX</title>
+<style>
+:root{--bg:#0b0d14;--fg:#f2f4fa;--mut:#8b90a3;--acc:#7c5cff;--op:.86;--rad:30px;--sc:1;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root{--bg:#e9ebf3;--fg:#12141c;--mut:#5b6075;color-scheme:light}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:radial-gradient(1200px 700px at 50% -10%,#2a2150,var(--bg));color:var(--fg);font:15px/1.4 -apple-system,"SF Pro Display","Segoe UI",Roboto,sans-serif;min-height:100vh}
+#stage{position:fixed;top:10px;left:0;right:0;display:flex;justify-content:center;z-index:5;pointer-events:none;padding-top:env(safe-area-inset-top,0px)}
+#notch{pointer-events:auto;transform:scale(var(--sc));transform-origin:top center;background:rgba(8,8,12,var(--op));backdrop-filter:blur(30px) saturate(1.8);-webkit-backdrop-filter:blur(30px) saturate(1.8);color:#fff;border-radius:var(--rad);width:340px;height:50px;overflow:hidden;position:relative;box-shadow:0 18px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.09);transition:width .6s cubic-bezier(.34,1.4,.5,1),height .6s cubic-bezier(.34,1.4,.5,1),border-radius .45s;max-width:96vw}
+#notch::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 35%);pointer-events:none}
+#notch.hov{width:390px;height:54px}
+#notch.open{width:min(780px,96vw);height:540px;border-radius:calc(var(--rad) + 10px)}
+#glow{position:absolute;inset:0;opacity:.5;pointer-events:none;border-radius:inherit}
+.a-aurora #glow{background:linear-gradient(120deg,#7c5cff66,#00e0b055,#ff5c9d66,#7c5cff66);background-size:300% 300%;animation:au 7s linear infinite}
+.a-neon #glow{box-shadow:inset 0 0 20px var(--acc),0 0 20px var(--acc);animation:ne 2.4s ease-in-out infinite}
+.a-wave #glow{background:repeating-linear-gradient(90deg,transparent 0 14px,var(--acc) 14px 15px);opacity:.18;animation:wv 3s linear infinite}
+.a-off #glow{display:none}
+@keyframes au{to{background-position:300% 0}}@keyframes ne{50%{opacity:.2}}@keyframes wv{to{background-position:60px 0}}
+#pill{position:absolute;inset:0 0 auto 0;height:50px;display:flex;align-items:center;gap:12px;padding:0 18px;cursor:pointer;font-size:13.5px;font-weight:600;white-space:nowrap;z-index:2}
+#stt{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;color:#d5d8e6}
+.orb{width:14px;height:14px;border-radius:50%;background:#555;flex:none;transition:background .3s}
+.on-l .orb{background:#ff453a;animation:pu 1.2s infinite}.n-listen .orb{background:#30d158;animation:pu .7s infinite}.n-think .orb{background:#ffd60a;animation:pu .5s infinite}.n-speak .orb{background:var(--acc);animation:pu .4s infinite}
+@keyframes pu{50%{transform:scale(1.5);opacity:.55}}
+.bars{display:none;gap:3px;align-items:center;height:20px}.n-listen .bars,.n-speak .bars{display:flex}
+.bars i{width:3px;height:6px;border-radius:2px;background:#fff;animation:bar .6s ease-in-out infinite}
+.bars i:nth-child(2){animation-delay:.1s}.bars i:nth-child(3){animation-delay:.2s}.bars i:nth-child(4){animation-delay:.3s}.bars i:nth-child(5){animation-delay:.15s}
+@keyframes bar{50%{height:20px}}
+.dots{display:none}.n-think .dots{display:inline}.dots::after{content:"●●●";letter-spacing:2px;font-size:8px;animation:bl 1s infinite}@keyframes bl{50%{opacity:.2}}
+#panel{position:absolute;top:56px;left:0;right:0;bottom:0;padding:6px 22px 18px;opacity:0;transition:opacity .25s;pointer-events:none;display:flex;flex-direction:column;z-index:2}
+#notch.open #panel{opacity:1;pointer-events:auto;transition-delay:.2s}
+#tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto}
+#tabs button{background:rgba(255,255,255,.08);border:0;color:#fff;padding:7px 14px;border-radius:99px;cursor:pointer;font:inherit;font-size:13px}
+#tabs button.on{background:var(--acc)}
+.pg{display:none;flex:1;overflow:auto;min-height:0}.pg.on{display:block}
+#p-ai.on{display:flex;flex-direction:column}
+.big{font-size:64px;font-weight:200;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.card{background:rgba(255,255,255,.07);border-radius:18px;padding:13px;margin-bottom:9px}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+button.b{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:13px;padding:9px 13px;cursor:pointer;font:inherit;font-size:13px}
+button.b:hover{background:rgba(255,255,255,.2)}
+input,select{background:rgba(255,255,255,.1);border:0;color:#fff;border-radius:11px;padding:9px 11px;font:inherit;font-size:13.5px;min-width:0}
+select option{color:#000}
+input[type=range]{padding:0;accent-color:var(--acc);width:140px}input[type=color]{padding:0;width:36px;height:30px}
+.mut{color:#9aa0b5;font-size:12px}
+#log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:7px;margin-bottom:10px;min-height:0}
+.m{padding:8px 13px;border-radius:16px;max-width:86%;font-size:14px;background:rgba(255,255,255,.1);white-space:pre-wrap}.m.u{align-self:flex-end;background:var(--acc)}
+li.t{list-style:none;display:flex;gap:8px;align-items:center;padding:4px 0}ul{margin:0;padding:0}
+#toast{position:absolute;top:0;left:0;right:0;height:50px;display:none;align-items:center;padding:0 20px;background:#000;font-size:13.5px;z-index:4}
+#hero{max-width:680px;margin:0 auto;padding:150px 22px 60px}
+h1{font-size:46px;letter-spacing:-1.5px;margin:0 0 8px}p.l{color:var(--mut);max-width:54ch}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:22px}
+.feat div{border:1px solid rgba(128,128,160,.25);border-radius:16px;padding:12px;font-size:13.5px}.feat b{display:block;margin-bottom:3px}
+@media(max-width:600px){#notch{width:92vw}#notch.hov{width:94vw}#notch.open{height:78vh}#hero{padding-top:120px}h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style></head>
+<body class="a-aurora">
+<div id="stage"><div id="notch"><div id="glow"></div><div id="toast"></div>
+<div id="pill"><span class="orb"></span><span class="bars"><i></i><i></i><i></i><i></i><i></i></span><span id="stt"></span><span class="dots"></span><span id="pc">--:--</span><span id="pb"></span></div>
+<div id="panel"><div id="tabs"></div>
+<div class="pg" id="p-home"><div class="big" id="bc">--:--</div><div class="mut" id="bd"></div>
+<div class="card" style="margin-top:12px"><b>Bateria</b> <span id="bat" class="mut">A verificar…</span></div>
+<div class="card"><b>Sistema</b> <span id="sys" class="mut"></span></div></div>
+<div class="pg" id="p-ai"><div id="log"></div>
+<div class="row"><input id="q" placeholder="Escreve para falar com a IA…" style="flex:1"><button class="b" id="send">Enviar</button><button class="b" id="mic" title="Escuta contínua">🎙</button><button class="b" id="stop" title="Parar">⏹</button></div>
+<div class="mut" id="hint" style="margin-top:7px"></div></div>
+<div class="pg" id="p-time"><div class="card"><b>Temporizador</b><div class="row" style="margin-top:7px"><input id="tm" type="number" min="1" value="5" style="width:72px"> min <button class="b" id="tgo">Iniciar</button> <span id="tout" class="big" style="font-size:30px"></span></div></div>
+<div class="card"><b>Cronómetro</b><div class="row" style="margin-top:7px"><span id="swo" class="big" style="font-size:30px">00:00.0</span><button class="b" id="sw1">Iniciar</button><button class="b" id="sw2">Repor</button></div></div></div>
+<div class="pg" id="p-notes"><div class="row"><input id="ni" placeholder="Nova nota…" style="flex:1"><button class="b" id="na">Adicionar</button></div><ul id="nl"></ul>
+<hr style="border-color:#fff2"><div class="row"><input id="ti" placeholder="Nova tarefa…" style="flex:1"><button class="b" id="ta">Adicionar</button></div><ul id="tl"></ul></div>
+<div class="pg" id="p-set">
+<div class="card row"><span>Nome do assistente</span><input id="s-name" style="width:120px"><label><input type="checkbox" id="s-listen"> Escuta contínua (palavra de ativação)</label></div>
+<div class="card row"><span>Animação</span><select id="s-anim"><option value="aurora">Aurora</option><option value="neon">Néon</option><option value="wave">Ondas</option><option value="off">Desligada</option></select><span>Voz</span><input type="range" id="s-rate" min=".7" max="1.4" step=".05"><label><input type="checkbox" id="s-tts"> Falar</label></div>
+<div class="card row"><span>Tamanho</span><input type="range" id="s-sc" min=".8" max="1.25" step=".05"><span>Opacidade</span><input type="range" id="s-op" min=".3" max="1" step=".02"></div>
+<div class="card row"><span>Cantos</span><input type="range" id="s-rad" min="14" max="36"><span>Cor</span><input type="color" id="s-acc"><label><input type="checkbox" id="s-24"> 24h</label></div>
+<div class="card row"><label><input type="checkbox" id="s-hov"> Expandir ao passar o rato</label><label><input type="checkbox" id="s-top"> Sempre aberta</label><button class="b" id="s-notif">Ativar notificações</button><span class="mut" id="s-st"></span></div>
+<div class="mut">Atalho: Ctrl/⌘ + Espaço abre e fecha a barra.</div></div>
+</div></div></div>
+<div id="hero"><h1>NOTCHBOX</h1><p class="l">Clica na barra no topo, ou diz «Olá» + o nome do assistente (por defeito, Nova) com esta página aberta.</p>
+<div class="feat"><div><b>IA a sério</b>As respostas vêm do Claude através da função /api/chat do teu projeto (a chave fica no servidor). Notas, tarefas, temporizador e horas funcionam também sem IA.</div>
+<div><b>Voz sem botões</b>A escuta usa o reconhecimento de voz do navegador (Chrome/Edge). Não é local: o áudio vai para o serviço de voz do navegador. Só funciona com a página aberta.</div>
+<div><b>Limites da web</b>Volume, brilho, Wi-Fi, Bluetooth, AirDrop e música do sistema exigem a app nativa.</div></div></div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),N=$('notch'),R=document.documentElement;
+const store={get(k,d){try{const v=localStorage.getItem('nb_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('nb_'+k,JSON.stringify(v))}catch(e){}}};
+const S=Object.assign({name:'Nova',h24:true,hov:true,tts:true,top:false,listen:true,rate:1,anim:'aurora',sc:1,op:.86,rad:30,acc:'#7c5cff'},store.get('set',{}));
+const tabs=[['home','Início'],['ai','Assistente'],['time','Tempo'],['notes','Notas'],['set','Definições']];
+tabs.forEach(([k,l])=>{const b=document.createElement('button');b.textContent=l;b.dataset.k=k;b.onclick=()=>tab(k);$('tabs').appendChild(b)});
+function tab(k){document.querySelectorAll('.pg').forEach(p=>p.classList.toggle('on',p.id=='p-'+k));document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.k==k))}
+tab('home');
+let opn=false,busy=false;
+function open(v){opn=v;N.classList.toggle('open',v);N.classList.remove('hov')}
+$('pill').onclick=()=>{if(blocked)startRec();if(!S.top)open(!opn)};
+N.onmouseenter=()=>{if(!opn){if(S.hov)open(true);else N.classList.add('hov')}};
+N.onmouseleave=()=>{N.classList.remove('hov');if(opn&&S.hov&&!S.top&&!busy&&!document.activeElement.matches('input'))open(false)};
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.code=='Space'){e.preventDefault();open(!opn)}if(e.key=='Escape'&&!S.top)open(false)});
+const p2=n=>String(n).padStart(2,'0');
+function clock(){const d=new Date();let h=d.getHours(),s='';if(!S.h24){s=h>=12?' PM':' AM';h=h%12||12}const t=p2(h)+':'+p2(d.getMinutes())+s;$('pc').textContent=t;$('bc').textContent=t;$('bd').textContent=d.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+setInterval(clock,1000);
+$('sys').textContent=(navigator.platform||'?')+' · '+(navigator.hardwareConcurrency||'?')+' núcleos'+(navigator.deviceMemory?' · ~'+navigator.deviceMemory+' GB RAM':'');
+if(navigator.getBattery)navigator.getBattery().then(b=>{const u=()=>{const p=Math.round(b.level*100)+'%';$('bat').textContent=p+(b.charging?' a carregar':'');$('pb').textContent=(b.charging?'⚡':'🔋')+p;if(b.level<.15&&!b.charging)toast('Bateria fraca: '+p)};b.onlevelchange=b.onchargingchange=u;u()});
+else $('bat').textContent='Indisponível neste navegador.';
+function toast(msg,sys){const t=$('toast');t.textContent=msg;t.style.display='flex';N.classList.add('hov');setTimeout(()=>{t.style.display='none';N.classList.remove('hov')},3500);if(sys&&window.Notification&&Notification.permission=='granted')try{new Notification('NOTCHBOX',{body:msg})}catch(e){}}
+// estado visual
+function state(c,t){N.classList.remove('n-listen','n-think','n-speak');if(c)N.classList.add(c);$('stt').textContent=t!=null?t:idle()}
+const idle=()=>blocked?'Toca para ativar o microfone':listening?'À escuta: diz «Olá '+S.name+'»':'NOTCHBOX';
+// dados
+const notes=store.get('notes',[]),tasks=store.get('tasks',[]);
+function render(){[['nl',notes,'notes'],['tl',tasks,'tasks']].forEach(([id,arr,key])=>{const ul=$(id);ul.innerHTML='';arr.forEach((it,i)=>{const li=document.createElement('li');li.className='t';const c=document.createElement('input');c.type='checkbox';c.checked=!!it.d;c.onchange=()=>{it.d=c.checked;store.set(key,arr)};const s=document.createElement('span');s.textContent=it.t;s.style.flex=1;const x=document.createElement('button');x.className='b';x.textContent='✕';x.onclick=()=>{arr.splice(i,1);store.set(key,arr);render()};li.append(c,s,x);ul.appendChild(li)})})}
+const addN=t=>{notes.push({t});store.set('notes',notes);render()},addT=t=>{tasks.push({t});store.set('tasks',tasks);render()};
+$('na').onclick=()=>{const v=$('ni').value.trim();if(v)addN(v);$('ni').value=''};$('ta').onclick=()=>{const v=$('ti').value.trim();if(v)addT(v);$('ti').value=''};render();
+let tI,tEnd=0;function startT(m){tEnd=Date.now()+m*6e4;clearInterval(tI);tI=setInterval(()=>{const r=tEnd-Date.now();if(r<=0){clearInterval(tI);$('tout').textContent='';toast('⏰ Temporizador terminado',true);speak('O temporizador terminou.');return}$('tout').textContent=p2(Math.floor(r/6e4))+':'+p2(Math.floor(r/1e3)%60)},250)}
+$('tgo').onclick=()=>startT(+$('tm').value||1);
+let sI,sT=0,sS=0;$('sw1').onclick=()=>{if(sI){clearInterval(sI);sI=0;sS+=Date.now()-sT;$('sw1').textContent='Continuar'}else{sT=Date.now();$('sw1').textContent='Parar';sI=setInterval(()=>{const e=sS+Date.now()-sT;$('swo').textContent=p2(Math.floor(e/6e4))+':'+p2(Math.floor(e/1e3)%60)+'.'+Math.floor(e/100)%10},100)}};
+$('sw2').onclick=()=>{clearInterval(sI);sI=0;sS=0;$('swo').textContent='00:00.0';$('sw1').textContent='Iniciar'};
+// chat
+function bubble(t,u){const m=document.createElement('div');m.className='m'+(u?' u':'');m.textContent=t;$('log').appendChild(m);$('log').scrollTop=1e9;return m}
+let speaking=false;
+function speak(t){if(!S.tts||!window.speechSynthesis||!t)return afterSpeak();speechSynthesis.cancel();const x=new SpeechSynthesisUtterance(t);x.lang='pt-PT';x.rate=S.rate;const v=speechSynthesis.getVoices().find(v=>/pt[-_]PT/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^pt/i.test(v.lang));if(v)x.voice=v;speaking=true;if(rec)try{rec.stop()}catch(e){}state('n-speak','A falar…');x.onend=x.onerror=afterSpeak;speechSynthesis.speak(x)}
+function afterSpeak(){speaking=false;conv=Date.now()+15000;state(null);setTimeout(startRec,300)}
+const hist=[];let ac=null,sample=null,sampleTried=false;
+const SYS='És o assistente de voz "'+'NAME'+'" dentro da barra NOTCHBOX, em português de Portugal. Responde de forma curta e natural (1 a 3 frases), sem markdown nem listas, porque a resposta é lida em voz alta. Usa as ferramentas para notas, tarefas, temporizadores, hora e abrir sites. Não podes controlar volume, brilho, Wi-Fi, Bluetooth nem música do sistema: diz isso com franqueza se pedirem.';
+const tools=[
+{name:'get_time',description:'Hora e data atuais',inputSchema:{type:'object',properties:{}},execute:()=>new Date().toLocaleString('pt-PT')},
+{name:'add_note',description:'Guardar uma nota',inputSchema:{type:'object',properties:{text:{type:'string'}},required:['text']},execute:i=>{addN(String(i.text).slice(0,500));return 'Nota guardada'}},
+{name:'add_task',description:'Adicionar tarefa à lista',inputSchema:{type:'object',properties:{text:{type:'string'}},required:['text']},execute:i=>{addT(String(i.text).slice(0,500));return 'Tarefa adicionada'}},
+{name:'list_notes',description:'Listar notas e tarefas',inputSchema:{type:'object',properties:{}},execute:()=>JSON.stringify({notas:notes.map(n=>n.t),tarefas:tasks.map(n=>n.t)})},
+{name:'start_timer',description:'Iniciar temporizador em minutos',inputSchema:{type:'object',properties:{minutes:{type:'number'}},required:['minutes']},execute:i=>{const m=Math.min(Math.max(+i.minutes||1,.1),600);startT(m);return 'Temporizador de '+m+' min iniciado'}},
+{name:'open_url',description:'Abrir um site (domínio simples, ex: youtube.com)',inputSchema:{type:'object',properties:{domain:{type:'string'}},required:['domain']},execute:i=>{const u=String(i.domain).replace(/^https?:\/\//,'').trim();if(!/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(u))throw new Error('endereço inválido');const w=window.open('https://'+u,'_blank','noopener');return w?'Aberto':'O navegador bloqueou a janela'}}];
+function local(x){const l=x.toLowerCase();let m;if(/horas/.test(l))return 'São '+$('pc').textContent+'.';if(m=l.match(/nota[: ]+(.+)/)){addN(m[1]);return 'Nota guardada.'}if(m=l.match(/tarefa[: ]+(.+)/)){addT(m[1]);return 'Tarefa adicionada.'}if(m=l.match(/(?:temporizador|timer).*?(\d+)/)){startT(+m[1]);return 'Temporizador iniciado.'}return null}
+async function remote(){const msgs=hist.slice(-12);while(msgs.length&&msgs[0].role!='user')msgs.shift();const last=msgs[msgs.length-1];const input=msgs.slice(0,-1).concat([{role:'user',content:'[Instruções: '+SYS.replace('NAME',S.name)+' Data/hora: '+new Date().toLocaleString('pt-PT')+']\n\n'+last.content}]);
+let r;try{r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:input}),signal:ac.signal})}catch(e){if(e.name=='AbortError')throw e;throw new Error('sem ligação ao servidor')}
+const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'a função /api/chat não respondeu ('+r.status+')');return d.text}
+async function ask(text){text=text.trim();if(!text)return;if(!opn)open(true);tab('ai');bubble(text,true);hist.push({role:'user',content:text});if(ac)ac.abort();ac=new AbortController();busy=true;state('n-think','A pensar…');const out=bubble('…');let final='';
+try{if(!sample&&!sampleTried){sampleTried=true;try{sample=await claude.use('sample')}catch(e){sample=null}}
+if(!sample)final=local(text)||await remote();else{const msgs=hist.slice(-12);while(msgs.length&&msgs[0].role!='user')msgs.shift();const last=msgs[msgs.length-1];const input=msgs.slice(0,-1).concat([{role:'user',content:'[Instruções: '+SYS.replace('NAME',S.name)+' Data/hora: '+new Date().toLocaleString('pt-PT')+']\n\n'+last.content}]);
+const r=await sample(input,{cache:false,signal:ac.signal,tools,modelTier:'quick',onText:({text:t})=>{out.textContent=t;$('log').scrollTop=1e9}});final=r.text}}
+catch(e){final=e&&e.code=='not_granted'?'Não autorizaste a IA. Recarrega a página e aceita o pedido.':e&&e.code=='rate_limited'?'Muitos pedidos seguidos. Tenta daqui a pouco.':e&&e.name=='AbortError'?'':'Erro: '+((e&&e.message)||'falhou')}
+busy=false;if(final){out.textContent=final;hist.push({role:'assistant',content:final});speak(final)}else{out.remove();afterSpeak()}}
+$('send').onclick=()=>{const v=$('q').value;$('q').value='';ask(v)};$('q').onkeydown=e=>{if(e.key=='Enter')$('send').click()};
+$('stop').onclick=()=>{if(ac)ac.abort();window.speechSynthesis&&speechSynthesis.cancel();speaking=false;busy=false;state(null);startRec()};
+// escuta contínua + palavra de ativação
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,listening=false,blocked=false,conv=0;
+const strip=s=>[...s].map(c=>c.normalize('NFD')[0]).join('').toLowerCase();
+function startRec(){if(!SR||!S.listen||speaking||rec)return;const r=new SR();r.lang='pt-PT';r.continuous=true;r.interimResults=false;rec=r;
+r.onstart=()=>{listening=true;blocked=false;N.classList.add('on-l');if(!busy)state(null)};
+r.onerror=e=>{if(e.error=='not-allowed'||e.error=='service-not-allowed'){blocked=true;S.listen&&state(null)}};
+r.onend=()=>{if(rec===r)rec=null;listening=false;N.classList.remove('on-l');if(!busy&&!speaking)state(null);if(S.listen&&!blocked&&!speaking)setTimeout(startRec,500)};
+r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)heard(e.results[i][0].transcript)};
+try{r.start()}catch(e){rec=null}}
+function stopRec(){S.listen=false;if(rec)try{rec.stop()}catch(e){}listening=false;N.classList.remove('on-l');state(null)}
+function heard(t){if(busy||speaking)return;const nm=strip(S.name.trim());if(!nm)return;const i=strip(t).indexOf(nm);
+if(i>=0){const rest=t.slice(i+nm.length).replace(/^[\s,.:;!?-]+/,'');open(true);tab('ai');state('n-listen','A ouvir…');if(rest.length>2)ask(rest);else{conv=Date.now()+20000;const g='Olá! Estou aqui. Em que posso ajudar?';bubble(g);speak(g)}}
+else if(Date.now()<conv){state('n-listen','A ouvir…');ask(t)}}
+$('mic').onclick=()=>{if(S.listen&&listening){stopRec();$('s-listen').checked=false;store.set('set',S)}else{S.listen=true;$('s-listen').checked=true;store.set('set',S);startRec()}};
+// definições
+function apply(){document.body.className='a-'+S.anim;R.style.setProperty('--sc',S.sc);R.style.setProperty('--op',S.op);R.style.setProperty('--rad',S.rad+'px');R.style.setProperty('--acc',S.acc);if(S.top)open(true);clock();store.set('set',S);$('hint').textContent=SR?'Diz «Olá '+S.name+'» ou «'+S.name+', …» sem tocar em nada. O microfone ativo mostra um ponto vermelho na barra.':'Este navegador não tem reconhecimento de voz: usa o teclado (ou o Chrome/Edge).';state(null)}
+const bind=(id,k,t)=>{const e=$(id);if(t=='c')e.checked=S[k];else e.value=S[k];e.oninput=()=>{S[k]=t=='c'?e.checked:t=='n'?+e.value:e.value;if(k=='listen')S.listen?startRec():stopRec();apply()}};
+bind('s-anim','anim');bind('s-sc','sc','n');bind('s-op','op','n');bind('s-rad','rad','n');bind('s-acc','acc');bind('s-name','name');bind('s-rate','rate','n');bind('s-24','h24','c');bind('s-hov','hov','c');bind('s-tts','tts','c');bind('s-top','top','c');bind('s-listen','listen','c');apply();
+const st=()=>$('s-st').textContent=window.Notification?'Estado: '+Notification.permission:'Não suportado';st();
+$('s-notif').onclick=()=>{if(window.Notification)Notification.requestPermission().then(st);else st()};
+bubble('Olá! Sou o '+S.name+'. Fala comigo dizendo «Olá '+S.name+'» ou escreve aqui em baixo.');
+if(window.speechSynthesis)speechSynthesis.getVoices();
+startRec();
+})();
+</script></body></html>
