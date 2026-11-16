@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NOTCHBOX</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#000000"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="NOTCHBOX">
+<style>
+:root{--acc:#a6ff3d;--mut:#8e8e93;box-sizing:border-box;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:linear-gradient(180deg,#5d93d6 0%,#b9a9cf 42%,#f0a883 72%,#7d3d2c 100%) fixed;color:#fff;font:15px/1.45 -apple-system,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+.desk body{background:transparent!important}.desk #hero{display:none}
+#bar{position:fixed;top:env(safe-area-inset-top,0px);left:50%;transform:translateX(-50%);z-index:5;height:38px;width:150px;max-width:96vw;background:#030303;border-radius:0 0 16px 16px;display:flex;align-items:center;gap:9px;padding:0 12px;color:#fff;font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.35);transition:width .5s cubic-bezier(.3,1.4,.5,1);cursor:pointer}
+#bm{display:flex;flex:none}#bd{width:9px;height:9px;border-radius:50%;flex:none;display:none}
+#ba{display:none;width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#7a4a1a,#222);font-size:11px;place-items:center;flex:none}
+#beq{display:none;gap:2px;align-items:center;height:18px;flex:none}#beq i{width:3px;height:4px;border-radius:2px;background:#30d158}
+#bt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;display:none}#bs{display:none;color:#8e8e93;font-weight:500}
+#bdots{display:none;color:#30d158;font-size:8px;letter-spacing:2px;animation:bl 1s infinite}#bc{display:none;margin-left:auto;font-variant-numeric:tabular-nums}
+#bmic{display:none;width:6px;height:6px;border-radius:50%;background:#ff3b30;flex:none}.mic #bmic{display:block}
+#bx,#be{display:none;background:#1f1f1f;border:0;color:#bbb;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:11px;flex:none;padding:0}
+#bmv,#bmp,#bmn{display:none;background:none;border:0;color:#fff;cursor:pointer;font-size:12px;padding:0 2px;flex:none}
+.s-idle #bc{display:block}.s-idle #bmic{margin-left:0}
+#bar.s-listen{width:350px}#bar.s-think,#bar.s-speak{width:460px}#bar.s-music{width:410px}
+.s-listen #bd{display:block;background:#ff3b30;animation:pu 1.2s infinite}.s-listen #bt,.s-think #bt,.s-speak #bt,.s-music #bt{display:block}
+.s-listen #bt:empty::before{content:"Fale…";color:#8e8e93}
+.s-listen #beq{display:flex}.s-listen #beq i{background:#ff3b30;animation:eq .5s ease-in-out infinite}
+.s-think #bdots{display:block}.s-listen #bx,.s-listen #be,.s-think #bx,.s-think #be,.s-speak #bx,.s-speak #be{display:block}
+.s-speak #beq{display:flex}.s-speak #beq i{animation:eq .6s ease-in-out infinite}
+.s-music #bd{display:block;background:#30d158}.s-music #ba{display:grid}.s-music #beq{display:flex}.s-music #beq i{animation:eq .7s ease-in-out infinite}.s-music.pa #beq i{animation:none}.s-music #bs{display:block}.s-music #bmv,.s-music #bmp,.s-music #bmn{display:block}
+#beq i:nth-child(2){animation-delay:.1s}#beq i:nth-child(3){animation-delay:.2s}#beq i:nth-child(4){animation-delay:.3s}#beq i:nth-child(5){animation-delay:.15s}
+@keyframes eq{50%{height:16px}}@keyframes bl{50%{opacity:.25}}@keyframes pu{50%{transform:scale(1.4);opacity:.6}}
+.mut{color:var(--mut);font-size:12.5px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.card{background:#141814;border-radius:18px;padding:13px;margin-bottom:10px;border:1px solid #1f251f}
+button.b{background:#222622;border:0;color:#fff;border-radius:99px;padding:8px 14px;cursor:pointer;font:inherit;font-size:13px}button.b:hover{background:#2e342e}
+input,select{background:#1a1d1a;border:0;color:#fff;border-radius:99px;padding:9px 14px;font:inherit;font-size:13.5px;min-width:0;outline:none}
+input:focus{box-shadow:inset 0 0 0 1.5px var(--acc)}input[type=range]{padding:0;accent-color:var(--acc)}input[type=color]{padding:0;width:36px;height:30px;border-radius:10px}input[type=checkbox]{accent-color:var(--acc)}
+.m{padding:8px 13px;border-radius:18px 18px 18px 6px;max-width:88%;font-size:14px;background:#1a1d1a;white-space:pre-wrap}.m.u{align-self:flex-end;border-radius:18px 18px 6px 18px;background:var(--acc)}
+.big{font-size:52px;font-weight:300;font-variant-numeric:tabular-nums}
+.hgrid{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-top:12px}.hgrid .dlog{height:230px}
+#dash.compact{top:env(safe-area-inset-top,0px);width:min(640px,96vw);height:min(430px,92vh);border-radius:0 0 24px 24px}
+#dmax{position:absolute;top:12px;right:50px;background:#1c1f1c;border:0;color:#aaa;border-radius:99px;width:30px;height:30px;cursor:pointer;z-index:2}
+#hero{max-width:720px;margin:0 auto;padding:130px 24px 70px;text-shadow:0 2px 20px rgba(0,0,0,.25)}
+h1{font-size:clamp(44px,9vw,84px);letter-spacing:-3px;line-height:1;margin:0 0 14px}p.l{font-size:18px;max-width:46ch}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:30px}
+.feat div{background:rgba(0,0,0,.4);border-radius:22px;padding:16px;font-size:14px;color:#e5e5ea;text-shadow:none}.feat b{display:block;margin-bottom:4px;color:#fff}
+@media(max-width:760px){.hgrid{grid-template-columns:1fr}#dash.compact{width:100vw;height:92vh}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+#dash{position:fixed;z-index:4;top:78px;left:50%;transform:translateX(-50%);width:min(1040px,96vw);height:min(640px,calc(100vh - 96px));background:#0b0d0b;border-radius:26px;display:flex;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);border:1px solid #20251f;color:#eee}
+#dash[hidden]{display:none}
+#dn{width:196px;background:#0e110e;border-right:1px solid #1b201b;padding:14px 10px;display:flex;flex-direction:column;gap:12px;flex:none;overflow:auto;scrollbar-width:none}
+.brand{display:flex;gap:10px;align-items:center;padding:0 6px}.pill{display:inline-block;font-size:11px;background:#1c3a12;color:var(--acc);border-radius:99px;padding:1px 8px}
+.lv{font-size:11px;color:#8c948c;display:flex;gap:6px;align-items:center;margin-top:3px}.lv i{display:block;width:44px;height:5px;background:#222;border-radius:9px;overflow:hidden}.lv u{display:block;height:100%;background:var(--acc);width:0}
+#nv{display:flex;flex-direction:column;gap:2px}#nv button{display:flex;gap:10px;align-items:center;background:none;border:0;color:#a9b0a9;padding:8px 10px;border-radius:12px;font:inherit;font-size:13.5px;cursor:pointer;text-align:left;white-space:nowrap}
+#nv button.on{background:#1a2a14;color:var(--acc)}#nv em{margin-left:auto;font-style:normal;font-size:11px;background:#222;border-radius:9px;padding:0 7px;color:#aab}
+#dm{flex:1;padding:22px 26px;overflow:auto;position:relative;min-width:0}
+#dmin{position:absolute;top:12px;right:14px;background:#1c1f1c;border:0;color:#aaa;border-radius:99px;width:30px;height:30px;cursor:pointer;z-index:2}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:16px}
+.tile{background:#141814;border:1px solid #1f251f;border-radius:18px;padding:14px;color:#fff;display:flex;flex-direction:column;gap:6px;align-items:flex-start;font:inherit;font-size:22px;cursor:pointer;text-align:left}
+.tile b{font-size:13px;font-weight:600}.tile:hover{border-color:var(--acc)}
+.dlog{display:flex;flex-direction:column;gap:8px;height:min(400px,calc(100vh - 270px));overflow:auto;margin:12px 0;scrollbar-width:none}
+.ok2{color:var(--acc)}.m.u,#send,.pl{color:#08130a}.pl{background:var(--acc);border-radius:99px;padding:6px 14px;border:0;cursor:pointer;font:inherit}
+.li{display:flex;gap:10px;align-items:center;padding:9px 12px;background:#141814;border-radius:14px;margin-top:6px}.li span{flex:1}.li.d span{text-decoration:line-through;opacity:.5}
+@media(max-width:760px){#dash{top:56px;width:100vw;height:calc(100vh - 56px);border-radius:22px 22px 0 0;flex-direction:column}#dn{width:100%;flex-direction:row;padding:8px;border:0;border-bottom:1px solid #1b201b;align-items:center}.brand div{display:none}#nv{flex-direction:row}#dm{padding:16px}}
+</style>
+</head><body>
+<div id="bar" class="s-idle"><span id="bm"></span><i id="bd"></i><span id="ba">♪</span><span id="beq"><i></i><i></i><i></i><i></i><i></i></span><span id="bt"></span><span id="bs"></span><button id="bmv" title="Anterior">⏮</button><button id="bmp" title="Pausa/Play">⏯</button><button id="bmn" title="Seguinte">⏭</button><span id="bdots">●●●</span><span id="bc"></span><span id="bmic" title="Microfone ligado"></span><button id="bx" title="Cancelar">✕</button><button id="be" title="Expandir">⤢</button></div>
+<div id="dash" hidden><aside id="dn"><div class="brand"><span id="mas"></span><div><b id="bn"></b><br><span class="pill">Pronto</span><div class="lv"><span id="lvt"></span><i><u id="lvb"></u></i></div></div></div><nav id="nv"></nav></aside><main id="dm"><button id="dmax" title="Compacto / janela">⤢</button><button id="dmin" title="Minimizar para a barra">—</button><div id="dp"></div></main></div>
+<input type="file" id="mf" accept="audio/*" multiple hidden><button id="s-inst" hidden></button>
+<div id="hero"><h1>NOTCHBOX</h1><p class="l">Assistente de voz com uma barra no topo do ecrã. O painel abre por cima; carrega em — para ver só a barra.</p>
+<div class="feat"><div><b>Voz sem botões</b>Diz «Ei, Nova» (ou o nome que escolheres). Usa o reconhecimento do navegador (Chrome/Edge): não é local, e só funciona com a página aberta.</div><div><b>IA</b>Responde via /api/chat do teu projeto (Groq, Gemini, Claude ou OpenAI, conforme as chaves).</div><div><b>Limites da web</b>Spotify do sistema, abrir apps, volume e brilho exigem a app desktop.</div></div></div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),R=document.documentElement;
+const store={get(k,d){try{const v=localStorage.getItem('nb_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('nb_'+k,JSON.stringify(v))}catch(e){}}};
+const S=Object.assign({name:'Nova',user:'',tts:true,listen:true,rate:1,hat:true,acc:'#a6ff3d'},store.get('set4',{}));
+if(window.nb)R.classList.add('desk');
+const p2=n=>String(n).padStart(2,'0');
+const mas=z=>`<svg width="${z}" height="${z}" viewBox="0 0 48 48"><rect x="7" y="15" width="34" height="26" rx="10" fill="#f1f1ef"/><rect x="12" y="20" width="24" height="15" rx="6" fill="#0b0b0b"/><rect x="17" y="25" width="5" height="5" rx="2.5" fill="${S.acc}"/><rect x="26" y="25" width="5" height="5" rx="2.5" fill="${S.acc}"/>${S.hat!==false?'<path d="M9 18Q24 -1 39 18Z" fill="#e5352b"/><rect x="8" y="16" width="32" height="5" rx="2.5" fill="#fff"/><circle cx="38" cy="5" r="3.5" fill="#fff"/>':''}</svg>`;
+function apply(){R.style.setProperty('--acc',S.acc);store.set('set4',S);$('bm').innerHTML=mas(24)}
+// ---- barra ----
+const bar=$('bar');let st='idle',txt='',micOn=false,busy=false,speaking=false,conv=0,demoMusic=false,extMedia=null;
+const au=new Audio(),pl=[];let pi=0;
+const playing=()=>demoMusic||!!extMedia||(pl.length&&!au.paused);
+function paint(){
+  const m=st=='idle'&&playing(),e=m?'music':st;
+  const isPaused=m&&!demoMusic&&(extMedia?!extMedia.playing:au.paused);
+  bar.className='s-'+e+(micOn?' mic':'')+(isPaused?' pa':'');
+  $('bt').textContent=e=='music'?(extMedia?extMedia.title:(pl[pi]?pl[pi].name:'Highway to Hell')):txt;
+  $('bs').textContent=e=='music'?(extMedia?(extMedia.artist||extMedia.source||'Externa'):(pl[pi]?'Ficheiro local':'AC/DC')):'';
+  if($('bmp'))$('bmp').textContent=isPaused?'▶':'⏸';
+}
+function setBar(s,t){st=s;txt=t||'';paint()}
+setInterval(()=>{const d=new Date();$('bc').textContent=p2(d.getHours())+':'+p2(d.getMinutes());if(st=='listen'&&!busy&&Date.now()>conv)setBar('idle')},1000);
+function flash(msg,sys){if(sys&&window.Notification&&Notification.permission=='granted')try{new Notification('NOTCHBOX',{body:msg})}catch(e){}if(st=='idle'){setBar('speak',msg);setTimeout(()=>{if(!speaking&&!busy&&st=='speak')setBar('idle')},3500)}}
+const toast=flash;
+// ---- música e ponte externa (Spotify / YouTube via Desktop ou Extensão) ----
+window.updateSystemMedia=(data)=>{extMedia=data&&data.title?data:null;paint()};
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='NB_MEDIA')window.updateSystemMedia(e.data.payload)});
+function mediaPrev(){if(extMedia){if(window.nb&&nb.media)nb.media.prev();else window.postMessage({type:'NB_MEDIA_CMD',cmd:'prev'},'*')}else loadTrk(pi-1)}
+function mediaToggle(){if(extMedia){extMedia.playing=!extMedia.playing;paint();if(window.nb&&nb.media)nb.media.toggle();else window.postMessage({type:'NB_MEDIA_CMD',cmd:'toggle'},'*')}else togglePlay()}
+function mediaNext(){if(extMedia){if(window.nb&&nb.media)nb.media.next();else window.postMessage({type:'NB_MEDIA_CMD',cmd:'next'},'*')}else loadTrk(pi+1)}
+$('bmv').onclick=e=>{e.stopPropagation();mediaPrev()};
+$('bmp').onclick=e=>{e.stopPropagation();mediaToggle()};
+$('bmn').onclick=e=>{e.stopPropagation();mediaNext()};
+function loadTrk(i){if(!pl.length)return $('mf').click();pi=(i+pl.length)%pl.length;au.src=pl[pi].url;au.play().catch(()=>{});paint()}
+function togglePlay(){if(!pl.length)return $('mf').click();au.paused?au.play():au.pause()}
+$('mf').onchange=e=>{[...e.target.files].forEach(f=>pl.push({name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)}));if(pl.length&&!au.src)loadTrk(0);e.target.value='';paint()};
+au.onplay=au.onpause=paint;au.onended=()=>loadTrk(pi+1);
+// ---- dados ----
+const tasks=store.get('tasks',[]);const addT=t=>{tasks.push({t});store.set('tasks',tasks)};const render=()=>{};
+const addN=t=>{mem.push({t:String(t),c:'Outras coisas'});store.set('mem',mem)};
+let tI,tEnd=0;function startT(m){tEnd=Date.now()+m*6e4;clearInterval(tI);tI=setInterval(()=>{if(tEnd-Date.now()<=0){clearInterval(tI);tEnd=0;flash('⏰ Temporizador terminado',true);speak('O temporizador terminou.')}},500)}
+// ---- voz ----
+function speak(t){if(!S.tts||!window.speechSynthesis||!t){setBar('speak',t);setTimeout(()=>{if(!busy&&st=='speak')setBar('idle')},Math.min(2500+(t||'').length*40,9000));return}speechSynthesis.cancel();const x=new SpeechSynthesisUtterance(t);x.lang='pt-PT';x.rate=S.rate;const vs=speechSynthesis.getVoices(),v=vs.find(v=>/pt[-_]PT/i.test(v.lang))||vs.find(v=>/^pt/i.test(v.lang));if(v)x.voice=v;speaking=true;if(rec)try{rec.stop()}catch(e){}setBar('speak',t);const end=()=>{speaking=false;conv=Date.now()+15000;if(st=='speak')setBar('idle');setTimeout(startRec,300)};x.onend=x.onerror=end;speechSynthesis.speak(x)}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,blocked=false,nosr=false;
+const strip=s=>[...s].map(c=>c.normalize('NFD')[0]).join('').toLowerCase();
+const after=(t,nm)=>{const i=strip(t).indexOf(nm);return i<0?null:t.slice(i+nm.length).replace(/^[\s,.:;!?-]+/,'')};
+function startRec(){if(!SR||!S.listen||speaking||rec||nosr)return;const r=new SR();r.lang='pt-PT';r.continuous=true;r.interimResults=true;rec=r;
+r.onstart=()=>{micOn=true;blocked=false;paint()};
+r.onerror=e=>{if(e.error=='not-allowed'||e.error=='service-not-allowed')blocked=true;else if(e.error=='network'||e.error=='language-not-supported'){nosr=true;flash('Voz indisponível neste ambiente: usa o texto')}};
+r.onend=()=>{if(rec===r)rec=null;micOn=false;paint();if(S.listen&&!blocked&&!speaking&&!nosr)setTimeout(startRec,500)};
+r.onresult=e=>{let fin='',itm='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;e.results[i].isFinal?fin+=t:itm+=t}const nm=strip(S.name.trim());
+if(itm&&!busy&&!speaking&&nm){const a=after(itm,nm);if(a!==null){conv=Date.now()+12000;setBar('listen',a)}else if(Date.now()<conv)setBar('listen',itm)}if(fin)heard(fin,nm)};
+try{r.start()}catch(e){rec=null}}
+function stopRec(){S.listen=false;apply();if(rec)try{rec.stop()}catch(e){}micOn=false;paint()}
+function toggleListen(){if(S.listen&&micOn)stopRec();else{S.listen=true;apply();startRec()}}
+function heard(t,nm){if(busy||speaking||!nm)return;const a=after(t,nm);if(a!==null){conv=Date.now()+12000;if(a.length>2)ask(a);else setBar('listen','')}else if(Date.now()<conv)ask(t)}
+// ---- IA ----
+const hist=[];let ac=null,sample=null,tried=false;
+const SYS='És o assistente de voz "NAME" numa barra no topo do ecrã (NOTCHBOX), em português de Portugal. Responde de forma curta e natural (1 a 3 frases), sem markdown nem listas, porque a resposta é lida em voz alta. Usa as ferramentas para tarefas, temporizadores, hora e abrir sites. Não podes controlar Spotify, volume, brilho, Wi-Fi nem abrir aplicações sem a ponte desktop/extensão: diz isso com franqueza se pedirem.';
+const tools=[
+{name:'get_time',description:'Hora e data atuais',inputSchema:{type:'object',properties:{}},execute:()=>new Date().toLocaleString('pt-PT')},
+{name:'add_task',description:'Adicionar tarefa à lista',inputSchema:{type:'object',properties:{text:{type:'string'}},required:['text']},execute:i=>{addT(String(i.text).slice(0,500));return 'Tarefa adicionada'}},
+{name:'start_timer',description:'Iniciar temporizador em minutos',inputSchema:{type:'object',properties:{minutes:{type:'number'}},required:['minutes']},execute:i=>{const m=Math.min(Math.max(+i.minutes||1,.1),600);startT(m);return 'Temporizador de '+m+' min iniciado'}},
+{name:'open_url',description:'Abrir um site (domínio simples, ex: google.com)',inputSchema:{type:'object',properties:{domain:{type:'string'}},required:['domain']},execute:i=>{const u=String(i.domain).replace(/^https?:\/\//,'').trim();if(!/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(u))throw new Error('endereço inválido');const w=window.open('https://'+u,'_blank','noopener');return w?'Aberto':'O navegador bloqueou a janela'}}];
+function local(x){const l=x.toLowerCase();let m;if(/que horas|^horas/.test(l))return 'São '+$('bc').textContent+'.';if(m=l.match(/tarefa[: ]+(.+)/)){addT(m[1]);return 'Tarefa adicionada.'}if(m=l.match(/(?:temporizador|timer).*?(\d+)/)){startT(+m[1]);return 'Temporizador iniciado.'}return null}
+function bubble(t,u){const l=$('dlog'),L=l?[(()=>{const m=document.createElement('div');m.className='m'+(u?' u':'');m.textContent=t;l.appendChild(m);l.scrollTop=1e9;return m})()]:[];return{set textContent(v){L.forEach(m=>{m.textContent=v;if(m.parentNode)m.parentNode.scrollTop=1e9})},remove(){L.forEach(m=>m.remove())}}}
+function msgs(){const m=hist.slice(-12);while(m.length&&m[0].role!='user')m.shift();const last=m[m.length-1];return m.slice(0,-1).concat([{role:'user',content:'[Instruções: '+SYSF()+' Data/hora: '+new Date().toLocaleString('pt-PT')+']\n\n'+last.content}])}
+async function remote(){let r;try{r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs()}),signal:ac.signal})}catch(e){if(e.name=='AbortError')throw e;throw new Error('sem ligação ao servidor da IA')}
+const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'a função /api/chat não respondeu ('+r.status+')');return d.text}
+async function ask(text){text=text.trim();if(!text)return;if(ac)ac.abort();ac=new AbortController();busy=true;W('xp',U('xp',0)+1);renderBrand();bubble(text,true);hist.push({role:'user',content:text});setBar('think',text);const out=bubble('…');let final='';
+try{final=local(text)||'';if(!final){if(!sample&&!tried){tried=true;try{sample=await claude.use('sample')}catch(e){sample=null}}
+if(sample){const r=await sample(msgs(),{cache:false,signal:ac.signal,tools,modelTier:'quick',onText:({text:t})=>{out.textContent=t}});final=r.text}else final=await remote()}}
+catch(e){final=e&&e.code=='not_granted'?'Não autorizaste a IA. Recarrega a página e aceita o pedido.':e&&e.code=='rate_limited'?'Muitos pedidos seguidos. Tenta daqui a pouco.':e&&e.name=='AbortError'?'':'Erro: '+((e&&e.message)||'falhou')}
+busy=false;if(final){out.textContent=final;hist.push({role:'assistant',content:final});speak(final)}else{out.remove();setBar('idle')}}
+$('bx').onclick=e=>{e.stopPropagation();if(ac)ac.abort();window.speechSynthesis&&speechSynthesis.cancel();speaking=false;busy=false;conv=0;setBar('idle');startRec()};
+$('be').onclick=e=>{e.stopPropagation();showDash(true,true)};
+bar.onclick=()=>{if(st=='idle')showDash(true,true)};
+function showDash(v,compact){const d=$('dash');d.hidden=!v;d.classList.toggle('compact',!!compact);bar.style.display=v?'none':'';if(window.nb&&nb.setDash)nb.setDash(v);if(v)show(pg)}
+// ===== PAINEL (janela principal) =====
+const U=(k,d)=>store.get(k,d),W=(k,v)=>store.set(k,v);
+const mem=U('mem',[]),rem=U('rem',[]),hab=U('hab',[]),rou=U('rou',[]);let pg='home',cop=U('cop',0);
+const COP=[['Assistente geral','Ajudas com qualquer assunto.'],['Programador','És um engenheiro de software sénior; dás respostas técnicas e exemplos de código curtos.'],['Professor','Explicas como um professor paciente, com exemplos simples.'],['Coach','És um coach motivador e prático.'],['Tradutor','Traduzes entre português e inglês e explicas nuances.'],['Escritor','Ajudas a escrever e a melhorar textos.']];
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const iso=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),today=()=>iso(new Date());
+function SYSF(){return SYS.replace('NAME',S.name)+' Persona atual: '+COP[cop][1]+(S.user?' O utilizador chama-se '+S.user+'.':'')+(mem.length?' Memórias do utilizador: '+mem.map(m=>m.t).join('; ')+'.':'')}
+tools.push({name:'remember',description:'Guardar uma memória importante sobre o utilizador',inputSchema:{type:'object',properties:{text:{type:'string'}},required:['text']},execute:i=>{mem.push({t:String(i.text).slice(0,300),c:'Outras coisas'});W('mem',mem);return 'Memória guardada'}});
+const dashOn=()=>!$('dash').hidden;
+const greet=()=>{const h=new Date().getHours();return h<6?'Boa noite':h<12?'Bom dia':h<19?'Boa tarde':'Boa noite'};
+const NAVL=[['home','Início','⌂'],['chat','Conversa','💬'],['mem','Memória','🧠'],['task','Tarefas','✅'],['rem','Lembretes','🔔'],['hab','Hábitos','🔥'],['tim','Timers','⏱'],['mus','Música','🎵'],['cop','Copilotos','🤖'],['rou','Rotinas','⚡'],['pc','Meu PC','🖥'],['set','Configurações','⚙']];
+const badge=k=>k=='task'?tasks.filter(t=>!t.d).length:k=='hab'?hab.filter(h=>h.d.includes(today())).length+'/'+hab.length:'';
+const H=(t,s)=>`<h2 style="margin:0 0 4px">${t}</h2><div class="mut" style="margin-bottom:14px">${s||''}</div>`;
+const addr=(id,ph,a)=>`<div class="row"><input id="${id}" data-enter="${a}" placeholder="${ph}" style="flex:1"><button class="b" data-a="${a}">＋</button></div>`;
+function renderBrand(){const x=U('xp',0);$('mas').innerHTML=mas(44);$('bn').textContent=S.name;$('lvt').textContent='Nv '+(Math.floor(x/20)+1);$('lvb').style.width=(x%20)*5+'%'}
+function show(k){pg=k;$('nv').innerHTML=NAVL.map(n=>`<button data-k="${n[0]}" class="${n[0]==k?'on':''}">${n[2]} ${n[1]}${badge(n[0])!==''&&badge(n[0])!==0?'<em>'+badge(n[0])+'</em>':''}</button>`).join('');$('dp').innerHTML=PAGES[k]();if(AFTER[k])AFTER[k]();renderBrand()}
+function graph(){const cats={};mem.forEach(m=>(cats[m.c]=cats[m.c]||[]).push(m));const ks=Object.keys(cats);let o='';const cx=200,cy=105;ks.forEach((k,i)=>{const a=i/ks.length*6.283-1.57,x=cx+Math.cos(a)*78,y=cy+Math.sin(a)*58;o+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#2c3d26"/>`;cats[k].forEach((m,j)=>{const b=j/cats[k].length*6.283+a,mx=x+Math.cos(b)*44,my=y+Math.sin(b)*30;o+=`<line x1="${x}" y1="${y}" x2="${mx}" y2="${my}" stroke="#243021"/><circle cx="${mx}" cy="${my}" r="3" fill="#9fe"/><text x="${mx}" y="${my-6}" font-size="7" fill="#aab" text-anchor="middle">${esc(m.t.slice(0,16))}</text>`});o+=`<circle cx="${x}" cy="${y}" r="6" fill="${k=='Pessoas'?'#ff4fa8':'#ffd60a'}"/><text x="${x}" y="${y+14}" font-size="8" fill="#fff" text-anchor="middle">${k}</text>`});return `<svg viewBox="0 0 400 210" style="width:100%;max-height:240px;background:#0f130f;border-radius:16px;margin:10px 0"><circle cx="${cx}" cy="${cy}" r="9" fill="${S.acc}"/><text x="${cx}" y="${cy+20}" font-size="8" fill="#fff" text-anchor="middle">Memória</text>${o}</svg>`}
+const streak=h=>{const d=new Date();if(!h.d.includes(iso(d)))d.setDate(d.getDate()-1);let n=0;while(h.d.includes(iso(d))){n++;d.setDate(d.getDate()-1)}return n};
+const PAGES={
+home:()=>H(greet()+(S.user?', '+esc(S.user):'')+'!','Escreve, fala ou diz «Ei, '+esc(S.name)+'»')+`<div class="row"><div>${mas(54)}</div><input id="hq" data-enter="hs" placeholder="Escreve para ${esc(S.name)}…" style="flex:1"><button class="b" data-a="hs">Enviar</button></div><div class="grid">${NAVL.slice(1,11).map(n=>`<button class="tile" data-a="go" data-k="${n[0]}">${n[2]}<b>${n[1]}</b></button>`).join('')}</div><div class="card" style="margin-top:12px"><b>Instalar</b><div class="mut">Instala a app neste dispositivo (PC, Android ou iPhone).</div><button class="b" data-a="inst" style="margin-top:8px">Instalar app</button></div>`,
+chat:()=>H('Conversa','Fala ou escreve com '+esc(S.name)+' · persona: '+COP[cop][0])+`<div class="dlog" id="dlog"></div><div class="row"><input id="dq" data-enter="ds" placeholder="Escreve para ${esc(S.name)}…" style="flex:1"><button class="b" data-a="ds">Enviar</button><button class="b" data-a="dmic">🎙</button></div>`,
+mem:()=>H('🧠 Memória',mem.length+' lembranças · a IA usa-as nas respostas')+addr('mi','Guardar algo importante (ex: a minha namorada chama-se Ana)','ma')+graph()+mem.map((m,i)=>`<div class="li"><span>${esc(m.t)}</span><button class="b" data-a="md" data-i="${i}">✕</button></div>`).join(''),
+task:()=>H('✅ Tarefas',tasks.filter(t=>!t.d).length+' por fazer')+addr('ni2','Nova tarefa…','ta')+tasks.map((t,i)=>`<div class="li ${t.d?'d':''}"><input type="checkbox" ${t.d?'checked':''} data-a="tt" data-i="${i}"><span>${esc(t.t)}</span><button class="b" data-a="tx" data-i="${i}">✕</button></div>`).join(''),
+rem:()=>H('🔔 Lembretes','Avisam com notificação e voz enquanto a app estiver aberta')+`<div class="row"><input id="rt" placeholder="Lembrar-me de…" style="flex:1"><input id="rd" type="datetime-local"><button class="b" data-a="ra">＋</button></div>`+rem.map((r,i)=>`<div class="li ${r.d?'d':''}"><span>${esc(r.t)} · ${new Date(r.at).toLocaleString('pt-PT')}</span><button class="b" data-a="rx" data-i="${i}">✕</button></div>`).join(''),
+hab:()=>H('🔥 Hábitos',hab.filter(h=>h.d.includes(today())).length+'/'+hab.length+' feitos hoje')+addr('hn','Novo hábito…','ha')+hab.map((h,i)=>{const ok=h.d.includes(today());return `<div class="li"><span>${esc(h.n)} · 🔥 ${streak(h)}</span><button class="${ok?'pl':'b'}" data-a="hk" data-i="${i}">${ok?'Feito hoje':'Marcar'}</button><button class="b" data-a="hx" data-i="${i}">✕</button></div>`}).join(''),
+tim:()=>H('⏱ Timers','Termina com aviso e voz')+`<div class="big" id="dt">—</div><div class="row">${[5,10,25,45].map(m=>`<button class="b" data-a="tm" data-m="${m}">${m} min</button>`).join('')}<input id="tmc" type="number" min="1" placeholder="min" style="width:80px"><button class="b" data-a="tm" data-m="0">Iniciar</button><button class="b" data-a="tc">Cancelar</button></div>`,
+mus:()=>H('🎵 Música','Toca ficheiros do teu dispositivo. Spotify/YouTube externos funcionam com a app desktop ou extensão.')+`<div class="card"><b id="dmt"></b><div class="row" style="margin-top:8px"><button class="b" data-a="mv">⏮</button><button class="pl" data-a="mp" id="dmp"></button><button class="b" data-a="mn">⏭</button><button class="b" data-a="mf">＋ Escolher música</button></div></div><div id="dml"></div>`,
+cop:()=>H('🤖 Copilotos','A persona muda o jeito como a IA responde')+COP.map((c,i)=>`<div class="li" style="${i==cop?'outline:1.5px solid var(--acc)':''}"><span><b>${c[0]}</b><br><span class="mut">${c[1]}</span></span><button class="${i==cop?'pl':'b'}" data-a="cs" data-i="${i}">${i==cop?'Ativo':'Usar'}</button></div>`).join(''),
+rou:()=>H('⚡ Rotinas','Uma linha por passo: falar: … · timer: 25 · abrir: youtube.com · tarefa: … · nota: …')+`<div class="card"><input id="rn" placeholder="Nome da rotina" style="width:100%;margin-bottom:8px"><textarea id="rs" rows="3" placeholder="falar: Bom dia!&#10;timer: 25" style="width:100%;background:#1c1c1e;color:#fff;border:0;border-radius:14px;padding:10px;font:inherit"></textarea><button class="b" data-a="rc" style="margin-top:8px">Criar rotina</button></div>`+rou.map((r,i)=>`<div class="li"><span><b>${esc(r.n)}</b><br><span class="mut">${r.s.length} passos</span></span><button class="pl" data-a="rr" data-i="${i}">▶ Executar</button><button class="b" data-a="rd2" data-i="${i}">✕</button></div>`).join(''),
+pc:()=>H('🖥 Meu PC','Informação que o navegador permite ler. Volume, brilho e abrir apps exigem a app desktop.')+`<div class="grid" id="pcg"></div>`,
+set:()=>H('⚙ Configurações','')+`<div class="card"><b>🧠 Cérebro (IA)</b><div id="prov" class="mut" style="margin:6px 0">A verificar…</div><button class="b" data-a="tst">Testar esta IA</button></div><div class="card"><b>Perfil</b><div class="row" style="margin-top:8px"><input data-s="user" value="${esc(S.user||'')}" placeholder="O teu nome"><input data-s="name" value="${esc(S.name)}" placeholder="Nome do assistente"></div></div><div class="card"><b>Voz</b><div class="row" style="margin-top:8px"><label><input type="checkbox" data-s="listen" ${S.listen?'checked':''}> Escuta contínua («Ei, ${esc(S.name)}»)</label><label><input type="checkbox" data-s="tts" ${S.tts?'checked':''}> Falar</label><input type="range" data-s="rate" min=".7" max="1.4" step=".05" value="${S.rate}"></div></div><div class="card"><b>Mascote</b><div class="row" style="margin-top:8px"><label><input type="checkbox" data-s="hat" ${S.hat!==false?'checked':''}> Gorro de Natal</label><input type="color" data-s="acc" value="${S.acc}"></div></div><div class="card"><b>Demonstração da barra</b><div class="mut" style="margin:6px 0">Mostra os estados da barra do topo: a ouvir, a pensar, a falar e música.</div><button class="b" data-a="demo">▶ Ver demonstração</button></div>`};
+const AFTER={chat:()=>hist.forEach(m=>{const d=document.createElement('div');d.className='m'+(m.role=='user'?' u':'');d.textContent=m.content;$('dlog').appendChild(d)}),
+pc:async()=>{const o=[['Sistema',navigator.platform||'—'],['Núcleos CPU',navigator.hardwareConcurrency||'—'],['Memória',navigator.deviceMemory?'~'+navigator.deviceMemory+' GB':'—'],['Ecrã',screen.width+'×'+screen.height],['Idioma',navigator.language],['Ligação',navigator.onLine?(navigator.connection?navigator.connection.effectiveType+' · '+navigator.connection.downlink+' Mb/s':'online'):'offline']];try{if(navigator.getBattery){const b=await navigator.getBattery();o.push(['Bateria',Math.round(b.level*100)+'%'+(b.charging?' ⚡':'')])}}catch(e){}try{const q=await navigator.storage.estimate();o.push(['Armazenamento da app',(q.usage/1e6).toFixed(1)+' MB'])}catch(e){}const g=$('pcg');if(g)g.innerHTML=o.map(x=>`<div class="tile" style="font-size:15px"><span class="mut">${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')},
+set:async()=>{const e=$('prov');try{const r=await fetch('/api/chat');const d=await r.json();if(e)e.innerHTML=d.providers&&d.providers.length?'<span class="ok2">✔ Funcionando: '+d.providers.join(' + ')+'</span> (automático, passa ao seguinte se um falhar)':'Nenhuma chave definida no servidor.'}catch(x){if(e)e.textContent=window.claude?'Pré-visualização: a IA usa o Claude diretamente.':'Servidor da IA não encontrado (/api/chat). Faz o deploy na Vercel.'}}};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const ACT={go:a=>show(a.dataset.k),hs:()=>{const v=$('hq').value.trim();if(v){show('chat');ask(v)}},ds:()=>{const e=$('dq'),v=e.value.trim();e.value='';ask(v)},dmic:()=>toggleListen(),
+inst:()=>{if(!(window.nbInstall&&nbInstall()))toast('Instalar: menu do navegador → Instalar app · iPhone: Partilhar → Ecrã principal')},
+ma:()=>{const v=$('mi').value.trim();if(v){mem.push({t:v,c:/namorad|amig|m[ãa]e|pai\b|irm[ãa]|chama|espos|marido|filh/i.test(v)?'Pessoas':'Outras coisas'});W('mem',mem);show('mem')}},md:a=>{mem.splice(+a.dataset.i,1);W('mem',mem);show('mem')},
+ta:()=>{const v=$('ni2').value.trim();if(v){addT(v);show('task')}},tt:a=>{const t=tasks[+a.dataset.i];t.d=!t.d;W('tasks',tasks);render();show('task')},tx:a=>{tasks.splice(+a.dataset.i,1);W('tasks',tasks);render();show('task')},
+ra:()=>{const t=$('rt').value.trim(),d=$('rd').value;if(t&&d){rem.push({t,at:d,d:false});W('rem',rem);show('rem')}},rx:a=>{rem.splice(+a.dataset.i,1);W('rem',rem);show('rem')},
+ha:()=>{const v=$('hn').value.trim();if(v){hab.push({n:v,d:[]});W('hab',hab);show('hab')}},hk:a=>{const h=hab[+a.dataset.i],t=today(),i=h.d.indexOf(t);i<0?h.d.push(t):h.d.splice(i,1);W('hab',hab);show('hab')},hx:a=>{hab.splice(+a.dataset.i,1);W('hab',hab);show('hab')},
+tm:a=>{const m=+a.dataset.m||+$('tmc').value;if(m>0)startT(m)},tc:()=>{tEnd=0;clearInterval(tI);$('dt').textContent='—'},
+mv:()=>mediaPrev(),mp:()=>mediaToggle(),mn:()=>mediaNext(),mf:()=>$('mf').click(),cs:a=>{cop=+a.dataset.i;W('cop',cop);show('cop')},
+rc:()=>{const n=$('rn').value.trim(),st=$('rs').value.split('\n').map(x=>x.trim()).filter(Boolean);if(n&&st.length){rou.push({n,s:st});W('rou',rou);show('rou')}},rd2:a=>{rou.splice(+a.dataset.i,1);W('rou',rou);show('rou')},
+rr:async a=>{for(const l of rou[+a.dataset.i].s){const m=l.match(/^(\w+):\s*(.+)$/);if(!m)continue;const k=m[1].toLowerCase(),v=m[2];if(k=='falar')speak(v);else if(k=='timer')startT(+v||1);else if(k=='tarefa')addT(v);else if(k=='nota')addN(v);else if(k=='abrir'&&/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(v))window.open('https://'+v,'_blank','noopener');await sleep(1200)}toast('⚡ Rotina concluída')},
+tst:()=>{show('chat');ask('Conta-me uma curiosidade rápida.')},demo:()=>{showDash(false);const q=[[0,'listen',''],[1800,'listen','Ei Nova, toca Highway to Hell'],[3600,'think','Nova, toca Highway to Hell'],[5600,'speak','Feito, senhor. A tocar Highway to Hell.'],[8200,'music','']];q.forEach(([t,s,x])=>setTimeout(()=>{if(s=='music'){demoMusic=true;setBar('idle')}else setBar(s,x)},t));setTimeout(()=>{demoMusic=false;paint()},11500)}};
+$('dp').onclick=e=>{const a=e.target.closest('[data-a]');if(a&&!(a.tagName=='INPUT'&&a.type!='checkbox'))ACT[a.dataset.a](a)};
+$('dp').onkeydown=e=>{if(e.key=='Enter'&&e.target.dataset.enter)ACT[e.target.dataset.enter](e.target)};
+$('dp').oninput=$('dp').onchange=e=>{const k=e.target.dataset.s;if(!k)return;const t=e.target;S[k]=t.type=='checkbox'?t.checked:t.type=='range'?+t.value:t.value;if(k=='listen')S.listen?startRec():stopRec();apply();renderBrand()};
+$('nv').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.k)};
+$('dmin').onclick=()=>showDash(false);$('dmax').onclick=()=>$('dash').classList.toggle('compact');
+setInterval(()=>{const e=$('dt');if(e){const r=tEnd-Date.now();e.textContent=r>0?p2(Math.floor(r/6e4))+':'+p2(Math.floor(r/1e3)%60):'—'}const t=$('dmt');if(t){t.textContent=extMedia?extMedia.title:(pl[pi]?pl[pi].name:'Sem música');$('dmp').textContent=(extMedia?!extMedia.playing:au.paused)?'▶':'⏸';if($('dml'))$('dml').innerHTML=pl.map((x,i)=>`<div class="li"><span>${i==pi?'▶ ':''}${esc(x.name)}</span></div>`).join('')}},700);
+setInterval(()=>{rem.forEach(r=>{if(!r.d&&Date.parse(r.at)<=Date.now()){r.d=true;W('rem',rem);toast('🔔 '+r.t,true);speak('Lembrete: '+r.t);if(pg=='rem'&&dashOn())show('rem')}})},15000);
+
+PAGES.home=()=>H(greet()+(S.user?', '+esc(S.user):'')+'!','Escreve, fala ou diz «Ei, '+esc(S.name)+'»')+`<div class="row"><input id="hq" data-enter="hs" placeholder="Escreve, fale ou diga «Ei, ${esc(S.name)}»" style="flex:1"><button class="b" data-a="dmic" title="Falar">🎙</button><button class="pl" data-a="hs">➤</button></div><div class="hgrid"><div class="dlog" id="dlog"></div><div class="card"><div class="mut">A tocar</div><b id="dmt"></b><div class="mut" id="dms"></div><input type="range" id="dprog" min="0" max="100" value="0" style="width:100%;margin:8px 0"><div class="row"><button class="b" data-a="mv">⏮</button><button class="pl" data-a="mp" id="dmp">▶</button><button class="b" data-a="mn">⏭</button><button class="b" data-a="mf">＋</button></div></div></div><div class="card">🔔 Lembretes: ${rem.filter(r=>!r.d).length} · ✅ Tarefas: ${tasks.filter(t=>!t.d).length} · 🔥 Hábitos: ${hab.filter(h=>h.d.includes(today())).length}/${hab.length}</div>`;
+AFTER.home=AFTER.chat;
+setInterval(()=>{const p=$('dprog');if(p&&document.activeElement!==p)p.value=au.duration?au.currentTime/au.duration*100:0;const s=$('dms');if(s)s.textContent=extMedia?(extMedia.artist||extMedia.source||'Externa'):(pl.length?'Ficheiro local · '+(pi+1)+'/'+pl.length:'Toca para escolher ficheiros')},500);
+$('dp').addEventListener('input',e=>{if(e.target.id=='dprog'&&au.duration)au.currentTime=e.target.value/100*au.duration});
+document.addEventListener('click',()=>{if(window.Notification&&Notification.permission=='default')Notification.requestPermission()},{once:true});
+if(window.nb){document.addEventListener('mousemove',e=>nb.setIgnore(!(bar.contains(e.target)||$('dash').contains(e.target))));document.addEventListener('mouseleave',()=>nb.setIgnore(true));nb.onToggle(()=>showDash($('dash').hidden,true))}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+apply();paint();
+if(!window.nb)showDash(true);
+startRec();
+})();
+</script>
+<script>
+(()=>{let dp=null;const b=document.getElementById('s-inst');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;b.style.display=''});
+window.nbInstall=()=>{if(dp){dp.prompt();dp.userChoice.finally(()=>{dp=null;b.style.display='none'});return true}return false};b.onclick=()=>{if(dp){dp.prompt();dp.userChoice.finally(()=>{dp=null;b.style.display='none'})}};
+window.addEventListener('appinstalled',()=>{b.style.display='none'});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));})();
+</script></body></html>

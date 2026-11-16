@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "NOTCHBOX Media Bridge",
+  "version": "1.0",
+  "description": "Liga o Spotify Web e o YouTube à barra do NOTCHBOX",
+  "permissions": ["tabs"],
+  "content_scripts": [
+    {
+      "matches": ["*://open.spotify.com/*", "*://www.youtube.com/*"],
+      "js": ["media-reader.js"]
+    },
+    {
+      "matches": ["*://*.vercel.app/*", "http://localhost/*"],
+      "js": ["notchbox-bridge.js"]
+    }
+  ]
+}
