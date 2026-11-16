@@ -1,7 +1,0 @@
-NOTCHBOX - Vercel
-1. Vercel > Add New > Project > carrega esta pasta (ou: vercel --prod na pasta).
-2. Settings > Environment Variables: ANTHROPIC_API_KEY = a tua chave (opcional: MODEL).
-3. Redeploy. Abre o site no Chrome/Edge, aceita o microfone e diz "Ola Nova".
-Nota: o endpoint /api/chat gasta a tua chave; nao partilhes o URL publicamente.
-
-PWA: depois do deploy, no Chrome/Edge aparece 'Instalar app' nas Definicoes (ou o icone na barra de endereco). No iPhone: Safari > Partilhar > Adicionar ao ecra principal. Precisa de HTTPS (a Vercel ja da).
